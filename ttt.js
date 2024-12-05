@@ -11,8 +11,14 @@ const GameBoard = (function() {
     const form = document.getElementById("playerForm");
     //Set up the event listener for when the player clicks the start button
     const startButton = document.getElementById("submit");
+    //Resets the winnter premeditatively
+    const winLabel = document.getElementById("winner");
     startButton.addEventListener("click", (event) => {
+        winLabel.textContent = "";
+        startButton.textContent = "Restart Game";
         event.preventDefault();
+
+        GameController.resetTurn();
         GameController.displayBoard(); 
         GameBoard.setUpGame(); 
 
@@ -29,7 +35,7 @@ const GameBoard = (function() {
     /*Point of access to setting the game up*/
     const setUpGame = () => {
         const playersTurnName = document.getElementById("currentTurn");
-        playersTurnName.textContent = "Player one click one of the tiles to start!";
+        playersTurnName.textContent = "Player one, click one of the tiles to start!";
 
         //Populate the gameboard array with nine possible values for a 3 x 3 grid
         for (let i = 0; i < 9; i++) {
@@ -37,7 +43,8 @@ const GameBoard = (function() {
   
             //Get all of the divs of the gameboard and set event listeners on them
             const div = document.getElementById(i);
-  
+            div.classList.add("enabled");
+
             //Define the event listener function
             const handleClick = (event) => {
                 //Check whose turn it is
@@ -59,10 +66,18 @@ const GameBoard = (function() {
                 }
   
             //Disable the div so it cannot be clicked again
-            div.classList.add("disabled");
+            div.classList = "square disabled";
             div.removeEventListener("click", handleClick);
             winState = GameController.checkWinner(gameboard);
-            console.log(winState);
+            if(winState === "X"){
+                GameController.endGame(playerTwo);
+            } else if(winState === "O"){
+                GameController.endGame(playerOne);
+            } else if(winState === "it's a tie"){
+                GameController.endGame(winState);
+            } else{
+                return;
+            }
             };
         div.addEventListener("click", handleClick); 
         }
@@ -116,6 +131,10 @@ const GameController = (function() {
         }
     }
 
+    const resetTurn = () => {
+        turn = -1;
+    };
+
     /*Given a board array of the moves the player has made, checks to see if the array matches any winning combination. Will return the symbol of the winner*/
     const checkWinner = (boardarray) => {
         //Scenario 1: rows (3 possibilities)
@@ -150,8 +169,23 @@ const GameController = (function() {
             }
         }
     }
+
+    /*Ends the game. Stops the player from taking another turn by disabling the divs*/
+    const endGame = ((winner) => {
+        const labelWinner = document.getElementById("winner");
+
+        if(winner === "it's a tie"){
+            labelWinner.textContent = "Well played, it's a tie!";
+        } else{
+            labelWinner.textContent = "Congratulations " + winner + ", you are the winner";
+        }
+
+        const labelTurn = document.getElementById("currentTurn");
+        labelTurn.textContent = "";
+    });
+
     return {
-        displayBoard, getPlayerTurn, checkWinner
+        displayBoard, getPlayerTurn, checkWinner, endGame, resetTurn
     }
 })(); //Closed parenthesis here = IIFE
 

@@ -6,7 +6,7 @@ const GameBoard = (function() {
     let playerOne;
     let playerTwo;
     //Variable that determines the state of the game... AKA is it won yet?
-    let state;
+    let winState;
 
     const form = document.getElementById("playerForm");
     //Set up the event listener for when the player clicks the start button
@@ -61,7 +61,8 @@ const GameBoard = (function() {
             //Disable the div so it cannot be clicked again
             div.classList.add("disabled");
             div.removeEventListener("click", handleClick);
-            
+            winState = GameController.checkWinner(gameboard);
+            console.log(winState);
             };
         div.addEventListener("click", handleClick); 
         }
@@ -118,26 +119,26 @@ const GameController = (function() {
     /*Given a board array of the moves the player has made, checks to see if the array matches any winning combination. Will return the symbol of the winner*/
     const checkWinner = (boardarray) => {
         //Scenario 1: rows (3 possibilities)
-        if(boardarray[0] === boardarray[1] && boardarray[1] === boardarray[2]){
-            return boardarray[0].value;
-        } else if(boardarray[3] === boardarray[4] && boardarray[4] === boardarray[5]){
-            return boardArray[3].value;
-        } else if(boardarray[6] === boardarray[7] && boardarray[7] === boardarray[8]){
-            return boardarray[6].value;
+        if(boardarray[0] === boardarray[1] && boardarray[1] === boardarray[2] && boardarray[0] != ""){
+            return boardarray[0];
+        } else if(boardarray[3] === boardarray[4] && boardarray[4] === boardarray[5] && boardarray[3] != ""){
+            return boardarray[3];
+        } else if(boardarray[6] === boardarray[7] && boardarray[7] === boardarray[8] && boardarray[6] != ""){
+            return boardarray[6];
         } 
         //Scenario 2: columns (3 possibilities)
-        else if(boardarray[0] === boardarray[3] && boardarray[3] === boardarray[6]){
-            return boardarray[0].value;
-        } else if(boardarray[1] === boardarray[4] && boardarray[4] === boardarray[7]){
-            return boardarray[1].value;
-        } else if(boardarray[2] === boardarray[5] && boardarray[5] === boardarray[8]){
-            return boardArray[2].value;
+        else if(boardarray[0] === boardarray[3] && boardarray[3] === boardarray[6] && boardarray[0] != ""){
+            return boardarray[0];
+        } else if(boardarray[1] === boardarray[4] && boardarray[4] === boardarray[7] && boardarray[1] != ""){
+            return boardarray[1];
+        } else if(boardarray[2] === boardarray[5] && boardarray[5] === boardarray[8] && boardarray[2] != ""){
+            return boardarray[2];
         }
         //Scenario 3: diagonals (2 possibilities)
-        else if(boardarray[0] === boardarray[4] && boardarray[4] === boardarray[8]){
-            return boardarray[0].value;
-        } else if(boardArray[2] === boardArray[4] && boardarray[4] === boardarray[6]){
-            return boardarray[2].value;
+        else if(boardarray[0] === boardarray[4] && boardarray[4] === boardarray[8] && boardarray[0] != ""){
+            return boardarray[0];
+        } else if(boardarray[2] === boardarray[4] && boardarray[4] === boardarray[6] && boardarray[2] != ""){
+            return boardarray[2];
         } else {
             //Either there's a tie or no winner yet
             //Scenario 4: tie (all filled with no winner)

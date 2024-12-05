@@ -8,9 +8,29 @@
     <script src="ttt.js" defer></script>
 </head>
 <body>
-    <header>
-        <h1>Welcome To Tic Tac Toe!</h1>
-    </header>
+    <h1>Tic Tac Toe</h1>
+    
+    <!--Form to show when start is clicked-->
+    <form method="post" id="playerForm">
+        <label for="playerOne">Player One:</label>
+        <input type="text" id="playerOne" placeholder="Some" required>
+
+        <label for="playerTwo">Player Two:</label>
+        <input type="text" id="playerTwo" placeholder="Body" required>
+
+        <label id="competitors"></label>
+        <label id="currentTurn"></label>
+    </form>
+
+    <!--This will be where all of the DOM elements of squares will be added when the game is started-->
+    <div class="gameboard">
+        
+    </div>
+
+    <!--This is where all of the controls will be to bring up a popup of a form which takes two users names.-->
+    <div class="controls">
+        <button id="submit" type="button">Start Game</button>
+    </div>
     
 </body>
 </html>
